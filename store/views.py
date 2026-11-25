@@ -41,11 +41,11 @@ class SelectedProductViewSet(viewsets.ModelViewSet):
         product = serializer.validated_data["product"]
         quantity = serializer.validated_data.get("quantity", 1)
 
-        # სწორი:
-        return Response(
-            {"detail": f"Only {product.stock} units are available in stock."},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+        if product.stock < quantity:
+            return Response(
+                {"detail": f"Only {product.stock} units are available in stock."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         item, created = SelectedProduct.objects.get_or_create(
             user=request.user,
@@ -56,7 +56,7 @@ class SelectedProductViewSet(viewsets.ModelViewSet):
             new_qty = item.quantity + quantity
             if product.stock < new_qty:
                 return Response(
-                    {"detail": f"Total quantity ({new_qty}) exceeds available stock ({product.stock})."}
+                    {"detail": f"Total quantity ({new_qty}) exceeds available stock ({product.stock})."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             item.quantity = new_qty
@@ -70,9 +70,8 @@ class SelectedProductViewSet(viewsets.ModelViewSet):
 
 
 class TestCheckoutView(APIView):
-
-#უფასო სატესტო გადახდა:ითვლის მომხმარებლის მიერ შერჩეული პროდუქტების ჯამურ ფასს ამოწმებს მარაგს ქმნის გადახდილ შეკვეთას (Order) და ასუფთავებს არჩეულ სიას
-    
+    # უფასო სატესტო გადახდა: ითვლის მომხმარებლის მიერ შერჩეული პროდუქტების ჯამურ ფასს,
+    # ამოწმებს მარაგს, ქმნის გადახდილ შეკვეთას (Order) და ასუფთავებს არჩეულ სიას.
     permission_classes = [IsAuthenticated]
     serializer_class = CheckoutSerializer
 
@@ -89,7 +88,7 @@ class TestCheckoutView(APIView):
 
         if not selected_items:
             return Response(
-                {"detail": "Please select at least one product before proceeding to checkout."}
+                {"detail": "Please select at least one product before proceeding to checkout."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -97,7 +96,7 @@ class TestCheckoutView(APIView):
         for item in selected_items:
             if item.product.stock < item.quantity:
                 return Response(
-                    {"detail": f"Insufficient stock for product '{item.product.name}'."}
+                    {"detail": f"Insufficient stock for product '{item.product.name}'."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             total += item.product.price * item.quantity
@@ -131,7 +130,7 @@ class TestCheckoutView(APIView):
 
 
 class OrderListView(generics.ListAPIView):
-#მომხმარებლის მიერ შესრულებული შეკვეთების ისტორია
+    # მომხმარებლის მიერ შესრულებული შეკვეთების ისტორია
     serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
