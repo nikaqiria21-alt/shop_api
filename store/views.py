@@ -41,11 +41,11 @@ class SelectedProductViewSet(viewsets.ModelViewSet):
         product = serializer.validated_data["product"]
         quantity = serializer.validated_data.get("quantity", 1)
 
-        if product.stock < quantity:
-            return Response(
-                {"detail": f"Only {product.stock} units are available in stock."}
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+        # სწორი:
+        return Response(
+            {"detail": f"Only {product.stock} units are available in stock."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
         item, created = SelectedProduct.objects.get_or_create(
             user=request.user,
