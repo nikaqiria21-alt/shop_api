@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-dev-secret-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
-
+CSRF_TRUSTED_ORIGINS = ["https://shopapi-production-7c18129b.up.railway.app"]
 ALLOWED_HOSTS = ["*"]
 
 
