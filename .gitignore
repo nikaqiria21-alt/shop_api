@@ -1,0 +1,26 @@
+# გარემოს ცვლადები (საიდუმლო მონაცემები არ ავტვირთოთ)
+.env
+*.env
+!.env.example
+
+# Python & Virtual Environment
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+*.egg-info/
+.pytest_cache/
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

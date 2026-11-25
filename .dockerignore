@@ -1,0 +1,33 @@
+# გარემოს ცვლადები და Git
+.env
+*.env
+.git
+.gitignore
+.github
+
+# Python & Virtual Environment
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+venv/
+.venv/
+env/
+.env/
+
+# ლოკალური ბაზა, ლოგები და სტატიკური/მედია ფაილები
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# დოკუმენტაცია და ლოკალური ტესტის სკრიპტი
+README.md
+test.py
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
